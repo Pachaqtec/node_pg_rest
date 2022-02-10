@@ -1,16 +1,15 @@
 const express = require('express')
 
-const { pool } = require('../connection/connection')
+const { User } = require('../controllers/usuario')
 
 const app = express()
 
 app.get('/listado', async (req, res) => {
 
-  const con = await pool.connect()
-
   try {
+
+    const response = await User.getListUser()
     
-    const response = await con.query('select * FROM fn_list_users();')
     console.log('response: ', response.rows)
 
     res.json({
@@ -20,6 +19,23 @@ app.get('/listado', async (req, res) => {
 
   } catch (error) {
     console.log('error: ', error);
+  }
+
+})
+
+app.post('/crear', async (req, res) => {
+  
+  try {
+    const response = await User.createUser(req)
+    
+    if (response.status === 200) {
+      return res.json(response)
+    }
+
+    return res.status(504).json(response)
+
+  } catch (error) {
+    console.log('error: ', error)
   }
 
 })

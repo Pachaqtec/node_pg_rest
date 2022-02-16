@@ -11,8 +11,9 @@ class User {
       return response
     } catch (error) {
       throw new Error(error)
+    } finally {
+      con.release()
     }
-  
   }
 
   static createUser = async (req) => {
@@ -37,6 +38,8 @@ class User {
 
     } catch (error) {
       throw new Error(error)
+    } finally {
+      con.release()
     }
   
   }
@@ -60,6 +63,8 @@ class User {
       }   
     } catch (error) {   
       console.log('error: ', error)
+    } finally {
+      con.release()
     }
 
   }
@@ -89,6 +94,8 @@ class User {
     } catch (error) {
       console.log('error: ', error);
       return res.status(500).json(error)
+    } finally {
+      con.release()
     }
   }
 }

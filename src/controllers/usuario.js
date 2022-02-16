@@ -40,6 +40,57 @@ class User {
     }
   
   }
+
+  static deleteUser = async (req) => {
+    const con = await pool.connect()
+
+    try {
+
+      const { params: { id } } = req
+
+      const response = await con.query(`
+      DELETE FROM TB_USUARIOS
+      WHERE id_user = $1;
+      `, [id])
+      console.log('response' , response)
+
+      return {
+        status: 200,
+        message: `El usuario con el ${req.params.id} fue eliminado !`
+      }   
+    } catch (error) {   
+      console.log('error: ', error)
+    }
+
+  }
+
+  static updateUser = async (req, res) => {
+    const con = await pool.connect()
+    try {
+
+      const { params: { id }, body } = req
+      const { names, lastname, age, email, idRol } = body
+
+      await con.query(`
+        UPDATE TB_USUARIOS
+        SET NAMES = $1,
+            LASTNAME = $2,
+            AGE = $3,
+            EMAIL = $4,
+            ID_ROL = $5
+        WHERE id_user = $6
+      `, [names, lastname, age, email, idRol, id])
+
+      return {
+        status: 200,
+        message: `Se creó un nuevo usuario!`
+      } 
+
+    } catch (error) {
+      console.log('error: ', error);
+      return res.status(500).json(error)
+    }
+  }
 }
 
 module.exports = {

@@ -10,7 +10,7 @@ app.get('/listado', async (req, res) => {
 
     const response = await User.getListUser()
     
-    console.log('response: ', response.rows)
+    // console.log('response: ', response.rows)
 
     res.json({
       status: 200,
@@ -38,6 +38,27 @@ app.post('/crear', async (req, res) => {
     console.log('error: ', error)
   }
 
+})
+
+app.delete('/eliminar/:id', async (req, res) => {
+  try {
+    const response = await User.deleteUser(req)
+
+    return res.json(response)
+
+  } catch (error) {
+    console.log('error: ', error);
+  }
+})
+
+app.put('/actualizar/:id', async (req, res) => {
+  try {
+    const response = await User.updateUser(req, res)
+
+    return res.json(response)
+  } catch (error) {
+    console.log('error: ', error);
+  }
 })
 
 module.exports = app
